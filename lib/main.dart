@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_tv/injection.dart' as di;
 
 void main() {
+  di.init();
   runApp(const MyApp());
 }
 
