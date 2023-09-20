@@ -20,17 +20,17 @@ class TvListNotifier extends ChangeNotifier {
   var _popularTvShows = <Tv>[];
   var _topRatedTvShows = <Tv>[];
 
-  List<Tv> get nowPlayingTvShows => _onTheAirTvShows;
+  List<Tv> get onTheAirTvShows => _onTheAirTvShows;
 
   List<Tv> get popularTvShows => _popularTvShows;
 
   List<Tv> get topRatedTvShows => _topRatedTvShows;
 
-  RequestState _nowPlayingState = RequestState.empty;
+  RequestState _onTheAirState = RequestState.empty;
   RequestState _popularTvShowsState = RequestState.empty;
   RequestState _topRatedTvShowsState = RequestState.empty;
 
-  RequestState get nowPlayingState => _nowPlayingState;
+  RequestState get onTheAirState => _onTheAirState;
 
   RequestState get popularTvShowsState => _popularTvShowsState;
 
@@ -40,20 +40,20 @@ class TvListNotifier extends ChangeNotifier {
 
   String get message => _message;
 
-  Future<void> fetchNowPlayingTvShows() async {
-    _nowPlayingState = RequestState.loading;
+  Future<void> fetchOnTheAirTvShows() async {
+    _onTheAirState = RequestState.loading;
     notifyListeners();
 
     final result = await getOnTheAirTvShows.execute();
 
     result.fold(
       (failure) {
-        _nowPlayingState = RequestState.error;
+        _onTheAirState = RequestState.error;
         _message = failure.message;
         notifyListeners();
       },
       (tvShowsData) {
-        _nowPlayingState = RequestState.loaded;
+        _onTheAirState = RequestState.loaded;
         _onTheAirTvShows = tvShowsData;
         notifyListeners();
       },
