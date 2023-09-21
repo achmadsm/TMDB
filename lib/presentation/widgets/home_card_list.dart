@@ -1,11 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_tv/common/constants.dart';
 import 'package:movie_tv/domain/entities/movie.dart';
 import 'package:movie_tv/domain/entities/tv.dart';
 
+import 'custom_image.dart';
+
 class HomeCardList<T> extends StatelessWidget {
-  const HomeCardList({Key? key, required this.items}) : super(key: key);
+  const HomeCardList({
+    Key? key,
+    required this.items,
+  }) : super(key: key);
 
   final List<T> items;
 
@@ -24,15 +27,15 @@ class HomeCardList<T> extends StatelessWidget {
             final movie = item;
             return content(
               context,
-              movie.id,
-              movie.posterPath ?? '-',
+              id: movie.id,
+              posterPath: movie.posterPath ?? '-',
             );
           } else if (item is Tv) {
             final tv = item;
             return content(
               context,
-              tv.id,
-              tv.posterPath ?? '-',
+              id: tv.id,
+              posterPath: tv.posterPath ?? '-',
             );
           }
           return null;
@@ -43,10 +46,10 @@ class HomeCardList<T> extends StatelessWidget {
   }
 
   Widget content(
-    BuildContext context,
-    int id,
-    String posterPath,
-  ) {
+    BuildContext context, {
+    required int id,
+    required String posterPath,
+  }) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: InkWell(
@@ -55,22 +58,7 @@ class HomeCardList<T> extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(16),
           ),
-          child: CachedNetworkImage(
-            imageUrl: '$baseImageUrl$posterPath',
-            placeholder: (
-              context,
-              url,
-            ) =>
-                const Center(
-              child: CircularProgressIndicator(),
-            ),
-            errorWidget: (
-              context,
-              url,
-              error,
-            ) =>
-                const Icon(Icons.error),
-          ),
+          child: CustomImage(posterPath: posterPath),
         ),
       ),
     );
