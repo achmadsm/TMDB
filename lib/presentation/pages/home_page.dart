@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_tv/common/constants.dart';
 import 'package:movie_tv/common/state_enum.dart';
 import 'package:movie_tv/presentation/pages/popular_page.dart';
+import 'package:movie_tv/presentation/pages/search_page.dart';
 import 'package:movie_tv/presentation/pages/top_rated_page.dart';
 import 'package:movie_tv/presentation/provider/movie_list_notifier.dart';
 import 'package:movie_tv/presentation/provider/tv_list_notifier.dart';
@@ -84,7 +85,11 @@ class _HomePageState extends State<HomePage> {
         title: const Text('TMDB'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(
+              context,
+              SearchPage.routeName,
+              arguments: (controller.page != 1) ? true : false,
+            ),
             icon: const Icon(Icons.search),
           )
         ],
