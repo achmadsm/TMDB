@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tv/common/constants.dart';
 import 'package:movie_tv/common/state_enum.dart';
 import 'package:movie_tv/presentation/provider/movie_search_notifier.dart';
 import 'package:movie_tv/presentation/provider/tv_search_notifier.dart';
 import 'package:movie_tv/presentation/widgets/card_item.dart';
+import 'package:movie_tv/presentation/widgets/heading_text.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
@@ -42,10 +42,7 @@ class SearchPage extends StatelessWidget {
               textInputAction: TextInputAction.search,
             ),
             const SizedBox(height: 16),
-            Text(
-              'Search Result',
-              style: kHeading6,
-            ),
+            const HeadingText('Search Result'),
             (isMovie) ? movies() : tvShows(),
           ],
         ),

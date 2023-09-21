@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tv/common/constants.dart';
 import 'package:movie_tv/common/state_enum.dart';
 import 'package:movie_tv/presentation/pages/popular_page.dart';
 import 'package:movie_tv/presentation/pages/search_page.dart';
 import 'package:movie_tv/presentation/pages/top_rated_page.dart';
 import 'package:movie_tv/presentation/provider/movie_list_notifier.dart';
 import 'package:movie_tv/presentation/provider/tv_list_notifier.dart';
+import 'package:movie_tv/presentation/widgets/heading_text.dart';
 import 'package:movie_tv/presentation/widgets/home_card_list.dart';
 import 'package:provider/provider.dart';
 
@@ -111,10 +111,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Now Playing',
-              style: kHeading6,
-            ),
+            const HeadingText('Now Playing'),
             Consumer<MovieListNotifier>(
               builder: (context, data, child) {
                 final state = data.nowPlayingState;
@@ -186,10 +183,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Airing Today',
-              style: kHeading6,
-            ),
+            const HeadingText('Airing Today'),
             Consumer<TvListNotifier>(
               builder: (context, data, child) {
                 final state = data.onTheAirState;
@@ -261,10 +255,7 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          style: kHeading6,
-        ),
+        HeadingText(title),
         InkWell(
           onTap: onTap,
           child: const Padding(
