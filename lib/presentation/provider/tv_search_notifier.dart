@@ -31,9 +31,15 @@ class TvSearchNotifier extends ChangeNotifier {
         notifyListeners();
       },
       (data) {
-        _searchResult = data;
-        _state = RequestState.loaded;
-        notifyListeners();
+        if (data.isEmpty) {
+          _message = 'No Data is found';
+          _state = RequestState.empty;
+          notifyListeners();
+        } else {
+          _searchResult = data;
+          _state = RequestState.loaded;
+          notifyListeners();
+        }
       },
     );
   }
