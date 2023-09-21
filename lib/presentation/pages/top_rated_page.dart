@@ -26,7 +26,7 @@ class TopRatedPage extends StatelessWidget {
     );
   }
 
-  Consumer<TvListNotifier> tvShows() {
+  Consumer tvShows() {
     return Consumer<TvListNotifier>(
       builder: (context, data, child) {
         final state = data.topRatedTvShowsState;
@@ -52,7 +52,7 @@ class TopRatedPage extends StatelessWidget {
     );
   }
 
-  Consumer<MovieListNotifier> movies() {
+  Consumer movies() {
     return Consumer<MovieListNotifier>(
       builder: (context, data, child) {
         final state = data.topRatedMoviesState;
