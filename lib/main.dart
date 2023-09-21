@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:movie_tv/common/constants.dart';
+import 'package:movie_tv/domain/entities/detail_args.dart';
 import 'package:movie_tv/injection.dart' as di;
+import 'package:movie_tv/presentation/pages/detail_page.dart';
 import 'package:movie_tv/presentation/pages/home_page.dart';
 import 'package:movie_tv/presentation/pages/popular_page.dart';
 import 'package:movie_tv/presentation/pages/search_page.dart';
 import 'package:movie_tv/presentation/pages/top_rated_page.dart';
+import 'package:movie_tv/presentation/provider/movie_detail_notifier.dart';
 import 'package:movie_tv/presentation/provider/movie_list_notifier.dart';
 import 'package:movie_tv/presentation/provider/movie_search_notifier.dart';
+import 'package:movie_tv/presentation/provider/tv_detail_notifier.dart';
 import 'package:movie_tv/presentation/provider/tv_list_notifier.dart';
 import 'package:movie_tv/presentation/provider/tv_search_notifier.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +39,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TvSearchNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<MovieDetailNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TvDetailNotifier>(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData.dark().copyWith(
@@ -48,6 +58,12 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case HomePage.routeName:
               return MaterialPageRoute(builder: (_) => const HomePage());
+            case DetailPage.routeName:
+              final args = settings.arguments as DetailArgs;
+              return MaterialPageRoute(
+                builder: (_) => DetailPage(args: args),
+                settings: settings,
+              );
             case PopularPage.routeName:
               final args = settings.arguments as bool;
               return MaterialPageRoute(

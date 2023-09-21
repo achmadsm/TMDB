@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_tv/domain/entities/detail_args.dart';
 import 'package:movie_tv/domain/entities/movie.dart';
 import 'package:movie_tv/domain/entities/tv.dart';
+import 'package:movie_tv/presentation/pages/detail_page.dart';
 
 import 'custom_image.dart';
 
@@ -29,6 +31,7 @@ class HomeCardList<T> extends StatelessWidget {
               context,
               id: movie.id,
               posterPath: movie.posterPath ?? '-',
+              isMovie: true,
             );
           } else if (item is Tv) {
             final tv = item;
@@ -36,6 +39,7 @@ class HomeCardList<T> extends StatelessWidget {
               context,
               id: tv.id,
               posterPath: tv.posterPath ?? '-',
+              isMovie: false,
             );
           }
           return null;
@@ -49,11 +53,19 @@ class HomeCardList<T> extends StatelessWidget {
     BuildContext context, {
     required int id,
     required String posterPath,
+    required bool isMovie,
   }) {
     return Container(
       padding: const EdgeInsets.all(8),
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.pushNamed(
+          context,
+          DetailPage.routeName,
+          arguments: DetailArgs(
+            id: id,
+            isMovie: isMovie,
+          ),
+        ),
         child: ClipRRect(
           borderRadius: const BorderRadius.all(
             Radius.circular(16),
