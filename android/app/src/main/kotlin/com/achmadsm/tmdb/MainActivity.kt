@@ -1,4 +1,4 @@
-package com.example.movie_tv
+package com.achmadsm.tmdb
 
 import io.flutter.embedding.android.FlutterActivity
 
