@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/presentation/provider/movie_list_notifier.dart';
-import 'package:movie_tv/presentation/provider/tv_list_notifier.dart';
-import 'package:movie_tv/presentation/widgets/card_item.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
+import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
+import 'package:tmdb/presentation/widgets/card_item.dart';
 import 'package:provider/provider.dart';
 
 class PopularPage extends StatelessWidget {

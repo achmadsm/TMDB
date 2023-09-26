@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_tv/data/models/genre_model.dart';
-import 'package:movie_tv/domain/entities/tv_detail.dart';
+import 'package:tmdb/data/models/genre_model.dart';
+import 'package:tmdb/domain/entities/tv_detail.dart';
 
 class TvDetailResponse extends Equatable {
   final List<int> episodeRunTime;

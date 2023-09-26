@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tv/domain/entities/detail_args.dart';
-import 'package:movie_tv/domain/entities/movie.dart';
-import 'package:movie_tv/domain/entities/tv.dart';
-import 'package:movie_tv/presentation/pages/detail_page.dart';
+import 'package:tmdb/domain/entities/detail_args.dart';
+import 'package:tmdb/domain/entities/movie.dart';
+import 'package:tmdb/domain/entities/tv.dart';
+import 'package:tmdb/presentation/pages/detail_page.dart';
 
 import 'custom_image.dart';
 

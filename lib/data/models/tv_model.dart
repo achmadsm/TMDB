@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_tv/domain/entities/tv.dart';
+import 'package:tmdb/domain/entities/tv.dart';
 
 class TvModel extends Equatable {
   final int id;

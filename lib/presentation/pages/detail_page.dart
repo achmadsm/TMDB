@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:movie_tv/common/constants.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/domain/entities/detail_args.dart';
-import 'package:movie_tv/domain/entities/genre.dart';
-import 'package:movie_tv/presentation/provider/movie_detail_notifier.dart';
-import 'package:movie_tv/presentation/provider/tv_detail_notifier.dart';
-import 'package:movie_tv/presentation/widgets/custom_image.dart';
-import 'package:movie_tv/presentation/widgets/heading_text.dart';
-import 'package:movie_tv/presentation/widgets/recommendation_card_list.dart';
+import 'package:tmdb/common/constants.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/domain/entities/detail_args.dart';
+import 'package:tmdb/domain/entities/genre.dart';
+import 'package:tmdb/presentation/provider/movie_detail_notifier.dart';
+import 'package:tmdb/presentation/provider/tv_detail_notifier.dart';
+import 'package:tmdb/presentation/widgets/custom_image.dart';
+import 'package:tmdb/presentation/widgets/heading_text.dart';
+import 'package:tmdb/presentation/widgets/recommendation_card_list.dart';
 import 'package:provider/provider.dart';
 
 class DetailPage extends StatefulWidget {

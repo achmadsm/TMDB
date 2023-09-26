@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/domain/entities/tv.dart';
-import 'package:movie_tv/domain/usecases/search_tv_shows.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/domain/entities/tv.dart';
+import 'package:tmdb/domain/usecases/search_tv_shows.dart';
 
 class TvSearchNotifier extends ChangeNotifier {
   final SearchTvShows searchTvShows;

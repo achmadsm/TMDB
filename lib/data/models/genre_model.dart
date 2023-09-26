@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_tv/domain/entities/genre.dart';
+import 'package:tmdb/domain/entities/genre.dart';
 
 class GenreModel extends Equatable {
   final int id;

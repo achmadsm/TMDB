@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_tv/data/models/movie_model.dart';
+import 'package:tmdb/data/models/movie_model.dart';
 
 class MovieResponse extends Equatable {
   final List<MovieModel> movieList;

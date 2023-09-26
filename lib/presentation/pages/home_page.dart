@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/presentation/pages/popular_page.dart';
-import 'package:movie_tv/presentation/pages/search_page.dart';
-import 'package:movie_tv/presentation/pages/top_rated_page.dart';
-import 'package:movie_tv/presentation/provider/movie_list_notifier.dart';
-import 'package:movie_tv/presentation/provider/tv_list_notifier.dart';
-import 'package:movie_tv/presentation/widgets/heading_text.dart';
-import 'package:movie_tv/presentation/widgets/home_card_list.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/presentation/pages/popular_page.dart';
+import 'package:tmdb/presentation/pages/search_page.dart';
+import 'package:tmdb/presentation/pages/top_rated_page.dart';
+import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
+import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
+import 'package:tmdb/presentation/widgets/heading_text.dart';
+import 'package:tmdb/presentation/widgets/home_card_list.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {

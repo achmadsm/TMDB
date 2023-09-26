@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/domain/entities/movie.dart';
-import 'package:movie_tv/domain/usecases/get_now_playing_movies.dart';
-import 'package:movie_tv/domain/usecases/get_popular_movies.dart';
-import 'package:movie_tv/domain/usecases/get_top_rated_movies.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/domain/entities/movie.dart';
+import 'package:tmdb/domain/usecases/get_now_playing_movies.dart';
+import 'package:tmdb/domain/usecases/get_popular_movies.dart';
+import 'package:tmdb/domain/usecases/get_top_rated_movies.dart';
 
 class MovieListNotifier extends ChangeNotifier {
   final GetNowPlayingMovies getNowPlayingMovies;

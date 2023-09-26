@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:movie_tv/common/state_enum.dart';
-import 'package:movie_tv/domain/entities/tv.dart';
-import 'package:movie_tv/domain/entities/tv_detail.dart';
-import 'package:movie_tv/domain/usecases/get_tv_show_detail.dart';
-import 'package:movie_tv/domain/usecases/get_tv_show_recommendations.dart';
+import 'package:tmdb/common/state_enum.dart';
+import 'package:tmdb/domain/entities/tv.dart';
+import 'package:tmdb/domain/entities/tv_detail.dart';
+import 'package:tmdb/domain/usecases/get_tv_show_detail.dart';
+import 'package:tmdb/domain/usecases/get_tv_show_recommendations.dart';
 
 class TvDetailNotifier extends ChangeNotifier {
   final GetTvShowDetail getTvDetail;

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:movie_tv/data/models/genre_model.dart';
-import 'package:movie_tv/domain/entities/movie_detail.dart';
+import 'package:tmdb/data/models/genre_model.dart';
+import 'package:tmdb/domain/entities/movie_detail.dart';
 
 class MovieDetailResponse extends Equatable {
   final List<GenreModel> genres;

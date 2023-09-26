@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:movie_tv/common/constants.dart';
-import 'package:movie_tv/common/exception.dart';
-import 'package:movie_tv/data/models/movie_detail_model.dart';
-import 'package:movie_tv/data/models/movie_model.dart';
-import 'package:movie_tv/data/models/movie_response.dart';
+import 'package:tmdb/common/constants.dart';
+import 'package:tmdb/common/exception.dart';
+import 'package:tmdb/data/models/movie_detail_model.dart';
+import 'package:tmdb/data/models/movie_model.dart';
+import 'package:tmdb/data/models/movie_response.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies();

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_tv/common/constants.dart';
+import 'package:tmdb/common/constants.dart';
 
 class HeadingText extends StatelessWidget {
   const HeadingText(this.title, {super.key});
