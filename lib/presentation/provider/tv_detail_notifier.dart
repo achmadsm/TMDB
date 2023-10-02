@@ -6,12 +6,12 @@ import 'package:tmdb/domain/usecases/get_tv_show_detail.dart';
 import 'package:tmdb/domain/usecases/get_tv_show_recommendations.dart';
 
 class TvDetailNotifier extends ChangeNotifier {
-  final GetTvShowDetail getTvDetail;
-  final GetTvShowRecommendations getTvRecommendations;
+  final GetTvShowDetail getTvShowDetail;
+  final GetTvShowRecommendations getTvShowRecommendations;
 
   TvDetailNotifier({
-    required this.getTvDetail,
-    required this.getTvRecommendations,
+    required this.getTvShowDetail,
+    required this.getTvShowRecommendations,
   });
 
   late TvDetail _tv;
@@ -36,8 +36,8 @@ class TvDetailNotifier extends ChangeNotifier {
     _tvState = RequestState.loading;
     notifyListeners();
 
-    final detailResult = await getTvDetail.execute(id);
-    final recommendationResult = await getTvRecommendations.execute(id);
+    final detailResult = await getTvShowDetail.execute(id);
+    final recommendationResult = await getTvShowRecommendations.execute(id);
 
     detailResult.fold(
       (failure) {

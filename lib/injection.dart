@@ -52,8 +52,8 @@ void init() {
   );
   locator.registerFactory(
     () => TvDetailNotifier(
-      getTvDetail: locator(),
-      getTvRecommendations: locator(),
+      getTvShowDetail: locator(),
+      getTvShowRecommendations: locator(),
     ),
   );
   locator.registerFactory(() => TvSearchNotifier(searchTvShows: locator()));
