@@ -1,0 +1,10 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "name": "name",
+      "overview": "overview",
+      "poster_path": "posterPath"
+    }
+  ]
+}

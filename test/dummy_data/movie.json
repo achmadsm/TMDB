@@ -1,0 +1,14 @@
+{
+  "genres": [
+    {
+      "id": 1,
+      "name": "name"
+    }
+  ],
+  "id": 1,
+  "overview": "overview",
+  "poster_path": "posterPath",
+  "runtime": 1,
+  "title": "title",
+  "vote_average": 1.0
+}
