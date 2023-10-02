@@ -84,8 +84,8 @@ void init() {
   locator.registerLazySingleton<MovieRemoteDataSource>(
     () => MovieRemoteDataSourceImpl(client: locator()),
   );
-  locator.registerLazySingleton<TvShowRemoteDataSource>(
-    () => TvShowRemoteDataSourceImpl(client: locator()),
+  locator.registerLazySingleton<TvRemoteDataSource>(
+    () => TvRemoteDataSourceImpl(client: locator()),
   );
 
   // external

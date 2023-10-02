@@ -9,7 +9,7 @@ import 'package:tmdb/domain/entities/tv_detail.dart';
 import 'package:tmdb/domain/repositories/tv_repository.dart';
 
 class TvRepositoryImpl implements TvRepository {
-  final TvShowRemoteDataSource remoteDataSource;
+  final TvRemoteDataSource remoteDataSource;
 
   TvRepositoryImpl({required this.remoteDataSource});
 

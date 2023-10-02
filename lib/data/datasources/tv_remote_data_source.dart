@@ -7,7 +7,7 @@ import 'package:tmdb/data/models/tv_detail_model.dart';
 import 'package:tmdb/data/models/tv_model.dart';
 import 'package:tmdb/data/models/tv_response.dart';
 
-abstract class TvShowRemoteDataSource {
+abstract class TvRemoteDataSource {
   Future<List<TvModel>> getOnTheAirTvShows();
 
   Future<List<TvModel>> getPopularTvShows();
@@ -21,10 +21,10 @@ abstract class TvShowRemoteDataSource {
   Future<List<TvModel>> searchTvShows(String query);
 }
 
-class TvShowRemoteDataSourceImpl implements TvShowRemoteDataSource {
+class TvRemoteDataSourceImpl implements TvRemoteDataSource {
   final http.Client client;
 
-  TvShowRemoteDataSourceImpl({required this.client});
+  TvRemoteDataSourceImpl({required this.client});
 
   static const tv = 'tv';
 
