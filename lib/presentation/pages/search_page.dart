@@ -50,7 +50,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Consumer<TvSearchNotifier> tvShows() {
+  Consumer tvShows() {
     return Consumer<TvSearchNotifier>(
       builder: (context, data, child) {
         final state = data.state;
@@ -85,7 +85,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Consumer<MovieSearchNotifier> movies() {
+  Consumer movies() {
     return Consumer<MovieSearchNotifier>(
       builder: (context, data, child) {
         final state = data.state;
