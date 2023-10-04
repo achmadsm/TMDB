@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tmdb/common/state_enum.dart';
 import 'package:tmdb/domain/entities/detail_args.dart';
 import 'package:tmdb/presentation/pages/detail_page.dart';
 import 'package:tmdb/presentation/provider/movie_detail_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_detail_notifier.dart';
 import 'package:tmdb/presentation/widgets/custom_image.dart';
-import 'package:provider/provider.dart';
 
 class RecommendationCardList extends StatelessWidget {
   const RecommendationCardList({Key? key, required this.isMovie})
@@ -25,8 +25,6 @@ class RecommendationCardList extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.recommendationState == RequestState.error) {
-          return Text(data.message);
         } else if (data.recommendationState == RequestState.loaded) {
           return (data.tvRecommendations.isNotEmpty)
               ? SizedBox(
@@ -45,6 +43,8 @@ class RecommendationCardList extends StatelessWidget {
                   ),
                 )
               : const Text('-');
+        } else if (data.recommendationState == RequestState.error) {
+          return Text(data.message);
         } else {
           return Container();
         }
@@ -59,8 +59,6 @@ class RecommendationCardList extends StatelessWidget {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (data.recommendationState == RequestState.error) {
-          return Text(data.message);
         } else if (data.recommendationState == RequestState.loaded) {
           return SizedBox(
             height: 150,
@@ -77,6 +75,8 @@ class RecommendationCardList extends StatelessWidget {
               itemCount: data.movieRecommendations.length,
             ),
           );
+        } else if (data.recommendationState == RequestState.error) {
+          return Text(data.message);
         } else {
           return Container();
         }
