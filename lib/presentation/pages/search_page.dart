@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tmdb/common/state_enum.dart';
 import 'package:tmdb/presentation/provider/movie_search_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_search_notifier.dart';
 import 'package:tmdb/presentation/widgets/card_item.dart';
 import 'package:tmdb/presentation/widgets/heading_text.dart';
-import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key, required this.isMovie}) : super(key: key);

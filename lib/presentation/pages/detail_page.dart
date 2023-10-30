@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 import 'package:tmdb/common/constants.dart';
 import 'package:tmdb/common/state_enum.dart';
 import 'package:tmdb/domain/entities/detail_args.dart';
 import 'package:tmdb/domain/entities/genre.dart';
 import 'package:tmdb/presentation/provider/movie_detail_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_detail_notifier.dart';
+import 'package:tmdb/presentation/provider/watchlist_notifier.dart';
 import 'package:tmdb/presentation/widgets/custom_image.dart';
 import 'package:tmdb/presentation/widgets/heading_text.dart';
 import 'package:tmdb/presentation/widgets/recommendation_card_list.dart';
-import 'package:provider/provider.dart';
+import 'package:tmdb/presentation/widgets/watchlist_button.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({Key? key, required this.args}) : super(key: key);
@@ -25,11 +27,17 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     Future.microtask(() {
-      (widget.args.isMovie)
-          ? Provider.of<MovieDetailNotifier>(context, listen: false)
-              .fetchMovieDetail(widget.args.id)
-          : Provider.of<TvDetailNotifier>(context, listen: false)
-              .fetchTvDetail(widget.args.id);
+      if (widget.args.isMovie) {
+        Provider.of<MovieDetailNotifier>(context, listen: false)
+            .fetchMovieDetail(widget.args.id);
+        Provider.of<WatchlistNotifier>(context, listen: false)
+            .loadWatchlistStatusMovie(widget.args.id);
+      } else {
+        Provider.of<TvDetailNotifier>(context, listen: false)
+            .fetchTvDetail(widget.args.id);
+        Provider.of<WatchlistNotifier>(context, listen: false)
+            .loadWatchlistStatusTv(widget.args.id);
+      }
     });
     super.initState();
   }
@@ -53,6 +61,9 @@ class _DetailPageState extends State<DetailPage> {
     return Consumer<TvDetailNotifier>(
       builder: (context, data, child) {
         final state = data.tvState;
+        final isAddedToWatchlist =
+            context.watch<WatchlistNotifier>().isAddedToWatchlist;
+
         if (state == RequestState.loading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -68,6 +79,8 @@ class _DetailPageState extends State<DetailPage> {
               runtime: episodeRunTime(tv.episodeRunTime),
               voteAverage: tv.voteAverage,
               isMovie: false,
+              isAddedWatchlist: isAddedToWatchlist,
+              item: tv,
             ),
           );
         } else {
@@ -87,6 +100,9 @@ class _DetailPageState extends State<DetailPage> {
           );
         } else if (state == RequestState.loaded) {
           final movie = data.movie;
+          final isAddedToWatchlist =
+              context.watch<WatchlistNotifier>().isAddedToWatchlist;
+
           return SafeArea(
             child: Content(
               title: movie.title,
@@ -96,6 +112,8 @@ class _DetailPageState extends State<DetailPage> {
               runtime: movie.runtime,
               voteAverage: movie.voteAverage,
               isMovie: true,
+              isAddedWatchlist: isAddedToWatchlist,
+              item: movie,
             ),
           );
         } else {
@@ -106,7 +124,7 @@ class _DetailPageState extends State<DetailPage> {
   }
 }
 
-class Content extends StatelessWidget {
+class Content<T> extends StatelessWidget {
   const Content({
     super.key,
     required this.title,
@@ -116,6 +134,8 @@ class Content extends StatelessWidget {
     required this.runtime,
     required this.voteAverage,
     required this.isMovie,
+    required this.isAddedWatchlist,
+    required this.item,
   });
 
   final String title;
@@ -125,6 +145,9 @@ class Content extends StatelessWidget {
   final int runtime;
   final double voteAverage;
   final bool isMovie;
+  final bool isAddedWatchlist;
+
+  final T item;
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +186,11 @@ class Content extends StatelessWidget {
                             Text(
                               title,
                               style: kHeading5,
+                            ),
+                            WatchlistButton(
+                              isMovie: isMovie,
+                              isAddedWatchlist: isAddedWatchlist,
+                              item: item,
                             ),
                             Text(
                               showGenres(genres),

@@ -60,21 +60,23 @@ class RecommendationCardList extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (data.recommendationState == RequestState.loaded) {
-          return SizedBox(
-            height: 150,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final movie = data.movieRecommendations[index];
-                return RecommendationCard(
-                  id: movie.id,
-                  posterPath: movie.posterPath,
-                  isMovie: isMovie,
-                );
-              },
-              itemCount: data.movieRecommendations.length,
-            ),
-          );
+          return (data.movieRecommendations.isNotEmpty)
+              ? SizedBox(
+                  height: 150,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final movie = data.movieRecommendations[index];
+                      return RecommendationCard(
+                        id: movie.id,
+                        posterPath: movie.posterPath,
+                        isMovie: isMovie,
+                      );
+                    },
+                    itemCount: data.movieRecommendations.length,
+                  ),
+                )
+              : const Text('-');
         } else if (data.recommendationState == RequestState.error) {
           return Text(data.message);
         } else {

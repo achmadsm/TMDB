@@ -1,23 +1,26 @@
 import 'package:equatable/equatable.dart';
 
-class Tv extends Equatable {
+class Watchlist extends Equatable {
   final int id;
-  final String name;
+  final String title;
   final String overview;
   final String? posterPath;
+  final bool? isMovie;
 
-  const Tv({
+  const Watchlist({
     required this.id,
-    required this.name,
+    required this.title,
     required this.overview,
     required this.posterPath,
+    required this.isMovie,
   });
 
   @override
   List<Object?> get props => [
         id,
-        name,
+        title,
         overview,
         posterPath,
+        isMovie,
       ];
 }

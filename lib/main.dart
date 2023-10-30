@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tmdb/common/constants.dart';
+import 'package:tmdb/common/utils.dart';
 import 'package:tmdb/domain/entities/detail_args.dart';
 import 'package:tmdb/injection.dart' as di;
 import 'package:tmdb/presentation/pages/detail_page.dart';
@@ -7,13 +9,14 @@ import 'package:tmdb/presentation/pages/home_page.dart';
 import 'package:tmdb/presentation/pages/popular_page.dart';
 import 'package:tmdb/presentation/pages/search_page.dart';
 import 'package:tmdb/presentation/pages/top_rated_page.dart';
+import 'package:tmdb/presentation/pages/watchlist_page.dart';
 import 'package:tmdb/presentation/provider/movie_detail_notifier.dart';
 import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
 import 'package:tmdb/presentation/provider/movie_search_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_detail_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_search_notifier.dart';
-import 'package:provider/provider.dart';
+import 'package:tmdb/presentation/provider/watchlist_notifier.dart';
 
 void main() {
   di.init();
@@ -31,19 +34,22 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<MovieListNotifier>(),
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<TvListNotifier>(),
+          create: (_) => di.locator<MovieDetailNotifier>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieSearchNotifier>(),
         ),
         ChangeNotifierProvider(
-          create: (_) => di.locator<TvSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
+          create: (_) => di.locator<TvListNotifier>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<TvDetailNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TvSearchNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<WatchlistNotifier>(),
         ),
       ],
       child: MaterialApp(
@@ -54,6 +60,7 @@ class MyApp extends StatelessWidget {
           textTheme: kTextTheme,
         ),
         home: const HomePage(),
+        navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case HomePage.routeName:
@@ -76,6 +83,8 @@ class MyApp extends StatelessWidget {
               final args = settings.arguments as bool;
               return MaterialPageRoute(
                   builder: (_) => SearchPage(isMovie: args));
+            case WatchlistPage.routeName:
+              return MaterialPageRoute(builder: (_) => const WatchlistPage());
             default:
               return MaterialPageRoute(
                 builder: (_) => const Scaffold(

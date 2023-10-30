@@ -3,6 +3,7 @@ import 'package:tmdb/common/constants.dart';
 import 'package:tmdb/domain/entities/detail_args.dart';
 import 'package:tmdb/domain/entities/movie.dart';
 import 'package:tmdb/domain/entities/tv.dart';
+import 'package:tmdb/domain/entities/watchlist.dart';
 import 'package:tmdb/presentation/pages/detail_page.dart';
 import 'package:tmdb/presentation/widgets/custom_image.dart';
 
@@ -36,8 +37,17 @@ class CardItem<T> extends StatelessWidget {
         posterPath: tv.posterPath ?? '-',
         isMovie: false,
       );
+    } else {
+      final watchlist = item as Watchlist;
+      return content(
+        context,
+        id: watchlist.id,
+        title: watchlist.title,
+        overview: watchlist.overview,
+        posterPath: watchlist.posterPath ?? '-',
+        isMovie: watchlist.isMovie ?? true,
+      );
     }
-    return const SizedBox();
   }
 
   Container content(

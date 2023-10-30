@@ -3,45 +3,45 @@ import 'package:tmdb/domain/entities/movie.dart';
 
 class MovieModel extends Equatable {
   final int id;
+  final String title;
   final String overview;
   final String? posterPath;
-  final String title;
 
   const MovieModel({
     required this.id,
+    required this.title,
     required this.overview,
     required this.posterPath,
-    required this.title,
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         id: json["id"],
+        title: json["title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        title: json["title"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "title": title,
         "overview": overview,
         "poster_path": posterPath,
-        "title": title,
       };
 
   Movie toEntity() {
     return Movie(
       id: id,
+      title: title,
       overview: overview,
       posterPath: posterPath,
-      title: title,
     );
   }
 
   @override
   List<Object?> get props => [
         id,
+        title,
         overview,
         posterPath,
-        title,
       ];
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tmdb/common/state_enum.dart';
 import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
 import 'package:tmdb/presentation/widgets/card_item.dart';
-import 'package:provider/provider.dart';
 
 class TopRatedPage extends StatelessWidget {
   const TopRatedPage({Key? key, required this.isMovie}) : super(key: key);
