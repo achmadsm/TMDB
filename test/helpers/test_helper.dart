@@ -1,6 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
+import 'package:tmdb/data/datasources/db/database_helper.dart';
+import 'package:tmdb/data/datasources/movie_local_data_source.dart';
 import 'package:tmdb/data/datasources/movie_remote_data_surce.dart';
+import 'package:tmdb/data/datasources/tv_local_data_source.dart';
 import 'package:tmdb/data/datasources/tv_remote_data_source.dart';
 import 'package:tmdb/domain/repositories/movie_repository.dart';
 import 'package:tmdb/domain/repositories/tv_repository.dart';
@@ -14,6 +17,9 @@ import 'package:tmdb/presentation/provider/tv_search_notifier.dart';
   TvRepository,
   MovieRemoteDataSource,
   TvRemoteDataSource,
+  MovieLocalDataSource,
+  TvLocalDataSource,
+  DatabaseHelper,
   MovieListNotifier,
   TvListNotifier,
   MovieSearchNotifier,

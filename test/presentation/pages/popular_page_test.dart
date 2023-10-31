@@ -8,7 +8,6 @@ import 'package:tmdb/domain/entities/tv.dart';
 import 'package:tmdb/presentation/pages/popular_page.dart';
 import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
-import 'package:tmdb/presentation/widgets/card_item.dart';
 
 import '../../helpers/test_helper.mocks.dart';
 

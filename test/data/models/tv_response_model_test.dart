@@ -33,7 +33,7 @@ void main() {
         "results": [
           {
             "id": 1,
-            "name": "name",
+            "name": "title",
             "overview": "overview",
             "poster_path": "posterPath"
           }

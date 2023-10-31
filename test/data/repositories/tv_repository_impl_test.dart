@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tmdb/common/constants.dart';
 import 'package:tmdb/common/exception.dart';
 import 'package:tmdb/common/failure.dart';
 import 'package:tmdb/data/models/tv_model.dart';
@@ -14,10 +15,15 @@ import '../../helpers/test_helper.mocks.dart';
 void main() {
   late TvRepositoryImpl repository;
   late MockTvRemoteDataSource mockRemoteDataSource;
+  late MockTvLocalDataSource mockLocalDataSource;
 
   setUp(() {
     mockRemoteDataSource = MockTvRemoteDataSource();
-    repository = TvRepositoryImpl(remoteDataSource: mockRemoteDataSource);
+    mockLocalDataSource = MockTvLocalDataSource();
+    repository = TvRepositoryImpl(
+      remoteDataSource: mockRemoteDataSource,
+      localDataSource: mockLocalDataSource,
+    );
   });
 
   group('On The Air Tv Shows', () {
@@ -239,10 +245,10 @@ void main() {
     test('should return tv show list when call to data source is successful',
         () async {
       // arrange
-      when(mockRemoteDataSource.searchTvShows(testQueryMovie))
+      when(mockRemoteDataSource.searchTvShows(testQueryTvShow))
           .thenAnswer((_) async => testTvModelList);
       // act
-      final result = await repository.searchTvShows(testQueryMovie);
+      final result = await repository.searchTvShows(testQueryTvShow);
       // assert
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
       final resultList = result.getOrElse(() => []);
@@ -252,10 +258,10 @@ void main() {
     test('should return ServerFailure when call to data source is unsuccessful',
         () async {
       // arrange
-      when(mockRemoteDataSource.searchTvShows(testQueryMovie))
+      when(mockRemoteDataSource.searchTvShows(testQueryTvShow))
           .thenThrow(ServerException());
       // act
-      final result = await repository.searchTvShows(testQueryMovie);
+      final result = await repository.searchTvShows(testQueryTvShow);
       // assert
       expect(result, const Left(ServerFailure('')));
     });
@@ -264,13 +270,81 @@ void main() {
         'should return ConnectionFailure when device is not connected to the internet',
         () async {
       // arrange
-      when(mockRemoteDataSource.searchTvShows(testQueryMovie))
+      when(mockRemoteDataSource.searchTvShows(testQueryTvShow))
           .thenThrow(const SocketException('Failed to connect to the network'));
       // act
-      final result = await repository.searchTvShows(testQueryMovie);
+      final result = await repository.searchTvShows(testQueryTvShow);
       // assert
       expect(result,
           const Left(ConnectionFailure('Failed to connect to the network')));
+    });
+  });
+
+  group('Save Watchlist', () {
+    test('should return success message when saving successful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testTvTable))
+          .thenAnswer((_) async => watchlistAddSuccessMessage);
+      // act
+      final result = await repository.saveWatchlistTvShow(testTvDetail);
+      // assert
+      expect(result, const Right(watchlistAddSuccessMessage));
+    });
+
+    test('should return DatabaseFailure when saving unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testTvTable))
+          .thenThrow(DatabaseException('Failed to add watchlist'));
+      // act
+      final result = await repository.saveWatchlistTvShow(testTvDetail);
+      // assert
+      expect(result, const Left(DatabaseFailure('Failed to add watchlist')));
+    });
+  });
+
+  group('Remove Watchlist', () {
+    test('should return success message when remove successful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testTvTable))
+          .thenAnswer((_) async => watchlistRemoveSuccessMessage);
+      // act
+      final result = await repository.removeWatchlistTvShow(testTvDetail);
+      // assert
+      expect(result, const Right(watchlistRemoveSuccessMessage));
+    });
+
+    test('should return DatabaseFailure when remove unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testTvTable))
+          .thenThrow(DatabaseException('Failed to remove watchlist'));
+      // act
+      final result = await repository.removeWatchlistTvShow(testTvDetail);
+      // assert
+      expect(result, const Left(DatabaseFailure('Failed to remove watchlist')));
+    });
+  });
+
+  group('Get Watchlist Status', () {
+    test('should return watch status whether data is found', () async {
+      // arrange
+      when(mockLocalDataSource.getTvById(testId)).thenAnswer((_) async => null);
+      // act
+      final result = await repository.isAddedToWatchlist(testId);
+      // assert
+      expect(result, false);
+    });
+  });
+
+  group('Get Watchlist Tv Shows', () {
+    test('should return list of tv shows', () async {
+      // arrange
+      when(mockLocalDataSource.getWatchlistTvShows())
+          .thenAnswer((_) async => [testTvTable]);
+      // act
+      final result = await repository.getWatchlistTvShows();
+      // assert
+      final resultList = result.getOrElse(() => []);
+      expect(resultList, [testWatchlistTv]);
     });
   });
 }

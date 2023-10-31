@@ -39,7 +39,7 @@ void main() {
           {"id": 1, "name": "name"}
         ],
         "id": 1,
-        "name": "name",
+        "name": "title",
         "overview": "overview",
         "poster_path": "posterPath",
         "vote_average": 1.0

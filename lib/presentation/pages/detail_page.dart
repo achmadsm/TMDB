@@ -61,18 +61,18 @@ class _DetailPageState extends State<DetailPage> {
     return Consumer<TvDetailNotifier>(
       builder: (context, data, child) {
         final state = data.tvState;
-        final isAddedToWatchlist =
-            context.watch<WatchlistNotifier>().isAddedToWatchlist;
-
         if (state == RequestState.loading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state == RequestState.loaded) {
           final tv = data.tv;
+          final isAddedToWatchlist =
+              context.watch<WatchlistNotifier>().isAddedToWatchlist;
+
           return SafeArea(
             child: Content(
-              title: tv.name,
+              title: tv.title,
               overview: tv.overview,
               posterPath: tv.posterPath,
               genres: tv.genres,

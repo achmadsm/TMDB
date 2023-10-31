@@ -3,27 +3,27 @@ import 'package:tmdb/domain/entities/tv.dart';
 
 class TvModel extends Equatable {
   final int id;
-  final String name;
+  final String title;
   final String overview;
   final String? posterPath;
 
   const TvModel({
     required this.id,
-    required this.name,
+    required this.title,
     required this.overview,
     required this.posterPath,
   });
 
   factory TvModel.fromJson(Map<String, dynamic> json) => TvModel(
         id: json["id"],
-        name: json["name"],
+        title: json["name"],
         overview: json["overview"],
         posterPath: json["poster_path"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name,
+        "name": title,
         "overview": overview,
         "poster_path": posterPath,
       };
@@ -31,7 +31,7 @@ class TvModel extends Equatable {
   Tv toEntity() {
     return Tv(
       id: id,
-      name: name,
+      title: title,
       overview: overview,
       posterPath: posterPath,
     );
@@ -40,7 +40,7 @@ class TvModel extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        name,
+        title,
         overview,
         posterPath,
       ];

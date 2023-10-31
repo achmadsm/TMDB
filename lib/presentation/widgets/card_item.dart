@@ -32,7 +32,7 @@ class CardItem<T> extends StatelessWidget {
       return content(
         context,
         id: tv.id,
-        title: tv.name,
+        title: tv.title,
         overview: tv.overview,
         posterPath: tv.posterPath ?? '-',
         isMovie: false,

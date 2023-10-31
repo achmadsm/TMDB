@@ -5,7 +5,7 @@ class TvDetail extends Equatable {
   final List<int> episodeRunTime;
   final List<Genre> genres;
   final int id;
-  final String name;
+  final String title;
   final String overview;
   final String posterPath;
   final double voteAverage;
@@ -14,7 +14,7 @@ class TvDetail extends Equatable {
     required this.episodeRunTime,
     required this.genres,
     required this.id,
-    required this.name,
+    required this.title,
     required this.overview,
     required this.posterPath,
     required this.voteAverage,
@@ -25,7 +25,7 @@ class TvDetail extends Equatable {
         episodeRunTime,
         genres,
         id,
-        name,
+        title,
         overview,
         posterPath,
         voteAverage,

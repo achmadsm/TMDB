@@ -8,7 +8,6 @@ class WatchlistTable extends Equatable {
   final String title;
   final String overview;
   final String? posterPath;
-
   final int? isMovie;
 
   const WatchlistTable({
@@ -29,7 +28,7 @@ class WatchlistTable extends Equatable {
 
   factory WatchlistTable.fromTvEntity(TvDetail tv) => WatchlistTable(
         id: tv.id,
-        title: tv.name,
+        title: tv.title,
         overview: tv.overview,
         posterPath: tv.posterPath,
         isMovie: 0,

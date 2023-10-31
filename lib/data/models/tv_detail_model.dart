@@ -6,7 +6,7 @@ class TvDetailResponse extends Equatable {
   final List<int> episodeRunTime;
   final List<GenreModel> genres;
   final int id;
-  final String name;
+  final String title;
   final String overview;
   final String posterPath;
   final double voteAverage;
@@ -15,7 +15,7 @@ class TvDetailResponse extends Equatable {
     required this.episodeRunTime,
     required this.genres,
     required this.id,
-    required this.name,
+    required this.title,
     required this.overview,
     required this.posterPath,
     required this.voteAverage,
@@ -27,7 +27,7 @@ class TvDetailResponse extends Equatable {
         genres: List<GenreModel>.from(
             json["genres"].map((x) => GenreModel.fromJson(x))),
         id: json["id"],
-        name: json["name"],
+        title: json["name"],
         overview: json["overview"],
         posterPath: json["poster_path"],
         voteAverage: json["vote_average"]?.toDouble(),
@@ -37,7 +37,7 @@ class TvDetailResponse extends Equatable {
         "episode_run_time": List<dynamic>.from(episodeRunTime.map((x) => x)),
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
         "id": id,
-        "name": name,
+        "name": title,
         "overview": overview,
         "poster_path": posterPath,
         "vote_average": voteAverage,
@@ -48,7 +48,7 @@ class TvDetailResponse extends Equatable {
       episodeRunTime: episodeRunTime,
       genres: genres.map((genre) => genre.toEntity()).toList(),
       id: id,
-      name: name,
+      title: title,
       overview: overview,
       posterPath: posterPath,
       voteAverage: voteAverage,
@@ -60,7 +60,7 @@ class TvDetailResponse extends Equatable {
         episodeRunTime,
         genres,
         id,
-        name,
+        title,
         overview,
         posterPath,
         voteAverage,

@@ -13,7 +13,7 @@ void main() {
     name: 'name',
   );
 
-  test('should be a subclass of Genre entity', () async {
+  test('should be a subclass of Genre entity', () {
     final result = tGenreModel.toEntity();
     expect(result, tGenre);
   });

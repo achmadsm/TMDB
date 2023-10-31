@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tmdb/common/constants.dart';
 import 'package:tmdb/common/exception.dart';
 import 'package:tmdb/common/failure.dart';
 import 'package:tmdb/data/models/movie_model.dart';
@@ -14,10 +15,15 @@ import '../../helpers/test_helper.mocks.dart';
 void main() {
   late MovieRepositoryImpl repository;
   late MockMovieRemoteDataSource mockRemoteDataSource;
+  late MockMovieLocalDataSource mockLocalDataSource;
 
   setUp(() {
     mockRemoteDataSource = MockMovieRemoteDataSource();
-    repository = MovieRepositoryImpl(remoteDataSource: mockRemoteDataSource);
+    mockLocalDataSource = MockMovieLocalDataSource();
+    repository = MovieRepositoryImpl(
+      remoteDataSource: mockRemoteDataSource,
+      localDataSource: mockLocalDataSource,
+    );
   });
 
   group('Now Playing Movies', () {
@@ -272,6 +278,75 @@ void main() {
       // assert
       expect(result,
           const Left(ConnectionFailure('Failed to connect to the network')));
+    });
+  });
+
+  group('Save Watchlist', () {
+    test('should return success message when saving successful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testMovieTable))
+          .thenAnswer((_) async => watchlistAddSuccessMessage);
+      // act
+      final result = await repository.saveWatchlistMovie(testMovieDetail);
+      // assert
+      expect(result, const Right(watchlistAddSuccessMessage));
+    });
+
+    test('should return DatabaseFailure when saving unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.insertWatchlist(testMovieTable))
+          .thenThrow(DatabaseException('Failed to add watchlist'));
+      // act
+      final result = await repository.saveWatchlistMovie(testMovieDetail);
+      // assert
+      expect(result, const Left(DatabaseFailure('Failed to add watchlist')));
+    });
+  });
+
+  group('Remove Watchlist', () {
+    test('should return success message when remove successful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testMovieTable))
+          .thenAnswer((_) async => watchlistRemoveSuccessMessage);
+      // act
+      final result = await repository.removeWatchlistMovie(testMovieDetail);
+      // assert
+      expect(result, const Right(watchlistRemoveSuccessMessage));
+    });
+
+    test('should return DatabaseFailure when remove unsuccessful', () async {
+      // arrange
+      when(mockLocalDataSource.removeWatchlist(testMovieTable))
+          .thenThrow(DatabaseException('Failed to remove watchlist'));
+      // act
+      final result = await repository.removeWatchlistMovie(testMovieDetail);
+      // assert
+      expect(result, const Left(DatabaseFailure('Failed to remove watchlist')));
+    });
+  });
+
+  group('Get Watchlist Status', () {
+    test('should return watch status whether data is found', () async {
+      // arrange
+      when(mockLocalDataSource.getMovieById(testId))
+          .thenAnswer((_) async => null);
+      // act
+      final result = await repository.isAddedToWatchlist(testId);
+      // assert
+      expect(result, false);
+    });
+  });
+
+  group('Get Watchlist Movies', () {
+    test('should return list of movies', () async {
+      // arrange
+      when(mockLocalDataSource.getWatchlistMovies())
+          .thenAnswer((_) async => [testMovieTable]);
+      // act
+      final result = await repository.getWatchlistMovies();
+      // assert
+      final resultList = result.getOrElse(() => []);
+      expect(resultList, [testWatchlistMovie]);
     });
   });
 }
