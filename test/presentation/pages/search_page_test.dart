@@ -3,12 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:tmdb/common/state_enum.dart';
-import 'package:tmdb/domain/entities/movie.dart';
-import 'package:tmdb/domain/entities/tv.dart';
 import 'package:tmdb/presentation/pages/search_page.dart';
 import 'package:tmdb/presentation/provider/movie_search_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_search_notifier.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
@@ -54,13 +53,14 @@ void main() {
     testWidgets('Page should display ListView when data is loaded',
         (WidgetTester tester) async {
       when(mockMovieSearchNotifier.state).thenReturn(RequestState.loaded);
-      when(mockMovieSearchNotifier.searchResult).thenReturn(<Movie>[]);
+      when(mockMovieSearchNotifier.searchResult).thenReturn(testMovieList);
 
       final textFieldFinder = find.byType(TextField);
       final listViewFinder = find.byType(ListView);
 
       await tester
           .pumpWidget(makeTestableWidgetMovie(const SearchPage(isMovie: true)));
+      await tester.drag(listViewFinder, const Offset(0, -300));
 
       await tester.enterText(textFieldFinder, 'Search Query');
       await tester.testTextInput.receiveAction(TextInputAction.search);
@@ -112,13 +112,14 @@ void main() {
     testWidgets('Page should display ListView when data is loaded',
         (WidgetTester tester) async {
       when(mockTvSearchNotifier.state).thenReturn(RequestState.loaded);
-      when(mockTvSearchNotifier.searchResult).thenReturn(<Tv>[]);
+      when(mockTvSearchNotifier.searchResult).thenReturn(testTvList);
 
       final textFieldFinder = find.byType(TextField);
       final listViewFinder = find.byType(ListView);
 
       await tester
           .pumpWidget(makeTestableWidgetTv(const SearchPage(isMovie: false)));
+      await tester.drag(listViewFinder, const Offset(0, -300));
 
       await tester.enterText(textFieldFinder, 'Search Query');
       await tester.testTextInput.receiveAction(TextInputAction.search);

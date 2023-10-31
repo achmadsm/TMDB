@@ -3,12 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:tmdb/common/state_enum.dart';
-import 'package:tmdb/domain/entities/movie.dart';
-import 'package:tmdb/domain/entities/tv.dart';
 import 'package:tmdb/presentation/pages/popular_page.dart';
 import 'package:tmdb/presentation/provider/movie_list_notifier.dart';
 import 'package:tmdb/presentation/provider/tv_list_notifier.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
@@ -58,12 +57,13 @@ void main() {
         (WidgetTester tester) async {
       when(mockMovieListNotifier.popularMoviesState)
           .thenReturn(RequestState.loaded);
-      when(mockMovieListNotifier.popularMovies).thenReturn(<Movie>[]);
+      when(mockMovieListNotifier.popularMovies).thenReturn(testMovieList);
 
       final listViewFinder = find.byType(ListView);
 
       await tester.pumpWidget(
           makeTestableWidgetMovie(const PopularPage(isMovie: true)));
+      await tester.drag(listViewFinder, const Offset(0, -300));
 
       expect(listViewFinder, findsOneWidget);
     });
@@ -103,12 +103,13 @@ void main() {
         (WidgetTester tester) async {
       when(mockTvListNotifier.popularTvShowsState)
           .thenReturn(RequestState.loaded);
-      when(mockTvListNotifier.popularTvShows).thenReturn(<Tv>[]);
+      when(mockTvListNotifier.popularTvShows).thenReturn(testTvList);
 
       final listViewFinder = find.byType(ListView);
 
       await tester.pumpWidget(
           makeTestableWidgetTvShow(const PopularPage(isMovie: false)));
+      await tester.drag(listViewFinder, const Offset(0, -300));
 
       expect(listViewFinder, findsOneWidget);
     });
