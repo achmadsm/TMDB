@@ -50,6 +50,18 @@ void main() {
   });
 
   group('Movie', () {
+    test('should change movies data when data is empty', () async {
+      // arrange
+      when(mockGetWatchlistMovies.execute())
+          .thenAnswer((_) async => const Right([]));
+      // act
+      await provider.fetchWatchlistMovies();
+      // assert
+      expect(provider.watchlistMovieState, RequestState.empty);
+      expect(provider.watchlistMovies, []);
+      expect(listerCallCount, 2);
+    });
+
     test('should change movies data when data is gotten successfully',
         () async {
       // arrange
@@ -124,6 +136,22 @@ void main() {
       expect(listerCallCount, 1);
     });
 
+    test('should update watchlist status when remove watchlist success',
+        () async {
+      // arrange
+      when(mockRemoveWatchlist.executeMovie(testMovieDetail))
+          .thenAnswer((_) async => const Right(watchlistRemoveSuccessMessage));
+      when(mockGetWatchlistStatus.executeMovie(testMovieDetail.id))
+          .thenAnswer((_) async => true);
+      // act
+      await provider.removeFromWatchlistMovie(testMovieDetail);
+      // assert
+      verify(mockGetWatchlistStatus.executeMovie(testMovieDetail.id));
+      expect(provider.isAddedToWatchlist, true);
+      expect(provider.watchlistMessage, watchlistRemoveSuccessMessage);
+      expect(listerCallCount, 1);
+    });
+
     test('should update watchlist message when add watchlist failed', () async {
       // arrange
       when(mockSaveWatchList.executeMovie(testMovieDetail))
@@ -136,9 +164,35 @@ void main() {
       expect(provider.watchlistMessage, 'Failed');
       expect(listerCallCount, 1);
     });
+
+    test('should update watchlist message when remove watchlist failed',
+        () async {
+      // arrange
+      when(mockRemoveWatchlist.executeMovie(testMovieDetail))
+          .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
+      when(mockGetWatchlistStatus.executeMovie(testMovieDetail.id))
+          .thenAnswer((_) async => false);
+      // act
+      await provider.removeFromWatchlistMovie(testMovieDetail);
+      // assert
+      expect(provider.watchlistMessage, 'Failed');
+      expect(listerCallCount, 1);
+    });
   });
 
   group('Tv', () {
+    test('should change tv shows data when data is empty', () async {
+      // arrange
+      when(mockGetWatchlistTvShows.execute())
+          .thenAnswer((_) async => const Right([]));
+      // act
+      await provider.fetchWatchlistTvShows();
+      // assert
+      expect(provider.watchlistTvState, RequestState.empty);
+      expect(provider.watchlistTvShows, []);
+      expect(listerCallCount, 2);
+    });
+
     test('should change tv shows data when data is gotten successfully',
         () async {
       // arrange
@@ -213,6 +267,22 @@ void main() {
       expect(listerCallCount, 1);
     });
 
+    test('should update watchlist status when remove watchlist success',
+        () async {
+      // arrange
+      when(mockRemoveWatchlist.executeTv(testTvDetail))
+          .thenAnswer((_) async => const Right(watchlistRemoveSuccessMessage));
+      when(mockGetWatchlistStatus.executeTv(testTvDetail.id))
+          .thenAnswer((_) async => true);
+      // act
+      await provider.removeFromWatchlistTv(testTvDetail);
+      // assert
+      verify(mockGetWatchlistStatus.executeTv(testTvDetail.id));
+      expect(provider.isAddedToWatchlist, true);
+      expect(provider.watchlistMessage, watchlistRemoveSuccessMessage);
+      expect(listerCallCount, 1);
+    });
+
     test('should update watchlist message when add watchlist failed', () async {
       // arrange
       when(mockSaveWatchList.executeTv(testTvDetail))
@@ -221,6 +291,20 @@ void main() {
           .thenAnswer((_) async => false);
       // act
       await provider.addWatchlistTv(testTvDetail);
+      // assert
+      expect(provider.watchlistMessage, 'Failed');
+      expect(listerCallCount, 1);
+    });
+
+    test('should update watchlist message when remove watchlist failed',
+        () async {
+      // arrange
+      when(mockRemoveWatchlist.executeTv(testTvDetail))
+          .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
+      when(mockGetWatchlistStatus.executeTv(testTvDetail.id))
+          .thenAnswer((_) async => false);
+      // act
+      await provider.removeFromWatchlistTv(testTvDetail);
       // assert
       expect(provider.watchlistMessage, 'Failed');
       expect(listerCallCount, 1);
