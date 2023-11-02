@@ -21,12 +21,12 @@ void main() {
   const movie = 'movie';
   const tv = 'tv';
 
-  final tMovieList =
-      MovieResponse.fromJson(json.decode(readJson('dummy_data/movies.json')))
-          .movieList;
-  final tTvList =
-      TvResponse.fromJson(json.decode(readJson('dummy_data/tv_shows.json')))
-          .tvList;
+  final tMovieList = MovieResponse.fromJson(
+          json.decode(readJson('movie', 'dummy_data/movies.json')))
+      .movieList;
+  final tTvList = TvResponse.fromJson(
+          json.decode(readJson('tv', 'dummy_data/tv_shows.json')))
+      .tvList;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
@@ -39,7 +39,7 @@ void main() {
       when(mockHttpClient.get(Uri.parse(
               '$baseUrl/search/$movie?$apiKey&query=$testQueryMovie')))
           .thenAnswer((_) async =>
-              http.Response(readJson('dummy_data/movies.json'), 200));
+              http.Response(readJson('movie', 'dummy_data/movies.json'), 200));
       // act
       final result = await dataSource.searchMovies(testQueryMovie);
       // assert
@@ -65,7 +65,7 @@ void main() {
       when(mockHttpClient.get(
               Uri.parse('$baseUrl/search/$tv?$apiKey&query=$testQueryTvShow')))
           .thenAnswer((_) async =>
-              http.Response(readJson('dummy_data/tv_shows.json'), 200));
+              http.Response(readJson('tv', 'dummy_data/tv_shows.json'), 200));
       // act
       final result = await dataSource.searchTvShows(testQueryTvShow);
       // assert
