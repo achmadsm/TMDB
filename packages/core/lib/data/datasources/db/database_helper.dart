@@ -1,3 +1,4 @@
+import 'package:movie/data/models/movie_table.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:watchlist/data/models/watchlist_table.dart';
 
@@ -18,6 +19,7 @@ class DatabaseHelper {
   }
 
   static const String _tblWatchlist = 'watchlist';
+  static const String _tblCache = 'cache';
 
   Future<Database> _initDb() async {
     final path = await getDatabasesPath();
@@ -37,6 +39,47 @@ class DatabaseHelper {
         isMovie INTEGER
       );
     ''');
+    await db.execute('''
+      CREATE TABLE  $_tblCache (
+        id INTEGER PRIMARY KEY,
+        title TEXT,
+        overview TEXT,
+        posterPath TEXT,
+        category TEXT
+      );
+    ''');
+  }
+
+  Future<void> insertCacheTransaction(
+      List<MovieTable> movies, String category) async {
+    final db = await database;
+    db!.transaction((txn) async {
+      for (final movie in movies) {
+        final movieJson = movie.toJson();
+        movieJson['category'] = category;
+        txn.insert(_tblCache, movieJson);
+      }
+    });
+  }
+
+  Future<List<Map<String, dynamic>>> getCacheMovies(String category) async {
+    final db = await database;
+    final List<Map<String, dynamic>> results = await db!.query(
+      _tblCache,
+      where: 'category = ?',
+      whereArgs: [category],
+    );
+
+    return results;
+  }
+
+  Future<int> clearCache(String category) async {
+    final db = await database;
+    return await db!.delete(
+      _tblCache,
+      where: 'category = ?',
+      whereArgs: [category],
+    );
   }
 
   Future<int> insertWatchlist(WatchlistTable watchlist) async {

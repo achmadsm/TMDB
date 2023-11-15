@@ -1,6 +1,6 @@
 import 'package:core/utils/constants.dart';
 import 'package:core/utils/exception.dart';
-import 'package:watchlist/data/datasources/db/database_helper.dart';
+import 'package:core/data/datasources/db/database_helper.dart';
 import 'package:watchlist/data/models/watchlist_table.dart';
 
 abstract class WatchlistLocalDataSource {

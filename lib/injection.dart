@@ -1,5 +1,9 @@
+import 'package:core/data/datasources/db/database_helper.dart';
+import 'package:core/utils/network_info.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:movie/data/datasources/movie_local_data_source.dart';
 import 'package:movie/data/datasources/movie_remote_data_source.dart';
 import 'package:movie/data/repositories/movie_repository_impl.dart';
 import 'package:movie/domain/repositories/movie_repository.dart';
@@ -27,7 +31,6 @@ import 'package:tv/domain/usecases/get_tv_show_detail.dart';
 import 'package:tv/domain/usecases/get_tv_show_recommendations.dart';
 import 'package:tv/presentation/provider/tv_detail_notifier.dart';
 import 'package:tv/presentation/provider/tv_list_notifier.dart';
-import 'package:watchlist/data/datasources/db/database_helper.dart';
 import 'package:watchlist/data/datasources/watchlist_local_data_source.dart';
 import 'package:watchlist/data/repositories/watchlist_repository_impl.dart';
 import 'package:watchlist/domain/repositories/watchlist_repository.dart';
@@ -103,6 +106,8 @@ void init() {
   locator.registerLazySingleton<MovieRepository>(
     () => MovieRepositoryImpl(
       remoteDataSource: locator(),
+      localDataSource: locator(),
+      networkInfo: locator(),
     ),
   );
   locator.registerLazySingleton<TvRepository>(
@@ -125,6 +130,9 @@ void init() {
   locator.registerLazySingleton<MovieRemoteDataSource>(
     () => MovieRemoteDataSourceImpl(client: locator()),
   );
+  locator.registerLazySingleton<MovieLocalDataSource>(
+    () => MovieLocalDataSourceImpl(databaseHelper: locator()),
+  );
   locator.registerLazySingleton<TvRemoteDataSource>(
     () => TvRemoteDataSourceImpl(client: locator()),
   );
@@ -138,6 +146,10 @@ void init() {
   // helper
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
+  // network info
+  locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
+
   // external
   locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => InternetConnectionChecker());
 }

@@ -11,7 +11,7 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:movie/domain/entities/movie_detail.dart' as _i6;
 import 'package:sqflite/sqflite.dart' as _i12;
 import 'package:tv/domain/entities/tv_detail.dart' as _i7;
-import 'package:watchlist/data/datasources/db/database_helper.dart' as _i11;
+import 'package:core/data/datasources/db/database_helper.dart' as _i11;
 import 'package:watchlist/data/datasources/watchlist_local_data_source.dart'
     as _i9;
 import 'package:watchlist/data/models/watchlist_table.dart' as _i10;
