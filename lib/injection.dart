@@ -19,8 +19,7 @@ import 'package:search/data/repositories/search_repository_impl.dart';
 import 'package:search/domain/repositories/search_repository.dart';
 import 'package:search/domain/usecases/search_movies.dart';
 import 'package:search/domain/usecases/search_tv_shows.dart';
-import 'package:search/presentation/provider/movie_search_notifier.dart';
-import 'package:search/presentation/provider/tv_search_notifier.dart';
+import 'package:search/presentation/bloc/search_bloc.dart';
 import 'package:tv/data/datasources/tv_remote_data_source.dart';
 import 'package:tv/data/repositories/tv_repository_impl.dart';
 import 'package:tv/domain/repositories/tv_repository.dart';
@@ -58,7 +57,7 @@ void init() {
       getMovieRecommendations: locator(),
     ),
   );
-  locator.registerFactory(() => MovieSearchNotifier(searchMovies: locator()));
+  locator.registerFactory(() => SearchMoviesBloc(locator()));
   locator.registerFactory(
     () => TvListNotifier(
       getOnTheAirTvShows: locator(),
@@ -72,7 +71,7 @@ void init() {
       getTvShowRecommendations: locator(),
     ),
   );
-  locator.registerFactory(() => TvSearchNotifier(searchTvShows: locator()));
+  locator.registerFactory(() => SearchTvShowsBloc(locator()));
   locator.registerFactory(
     () => WatchlistNotifier(
       getWatchlistMovies: locator(),

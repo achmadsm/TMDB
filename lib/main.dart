@@ -1,22 +1,22 @@
+import 'package:core/domain/entities/detail_args.dart';
 import 'package:core/presentation/pages/detail_page.dart';
 import 'package:core/presentation/pages/home_page.dart';
+import 'package:core/presentation/pages/popular_page.dart';
+import 'package:core/presentation/pages/top_rated_page.dart';
 import 'package:core/styles/colors.dart';
 import 'package:core/styles/text_styles.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:core/utils/route.dart';
-import 'package:core/domain/entities/detail_args.dart';
-import 'package:tmdb/injection.dart' as di;
-import 'package:core/presentation/pages/popular_page.dart';
-import 'package:search/presentation/pages/search_page.dart';
-import 'package:core/presentation/pages/top_rated_page.dart';
-import 'package:watchlist/presentation/pages/watchlist_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/presentation/provider/movie_detail_notifier.dart';
 import 'package:movie/presentation/provider/movie_list_notifier.dart';
-import 'package:search/presentation/provider/movie_search_notifier.dart';
+import 'package:provider/provider.dart';
+import 'package:search/presentation/bloc/search_bloc.dart';
+import 'package:search/presentation/pages/search_page.dart';
+import 'package:tmdb/injection.dart' as di;
 import 'package:tv/presentation/provider/tv_detail_notifier.dart';
 import 'package:tv/presentation/provider/tv_list_notifier.dart';
-import 'package:search/presentation/provider/tv_search_notifier.dart';
+import 'package:watchlist/presentation/pages/watchlist_page.dart';
 import 'package:watchlist/presentation/provider/watchlist_notifier.dart';
 
 void main() {
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<MovieDetailNotifier>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<SearchMoviesBloc>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<TvListNotifier>(),
@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<TvDetailNotifier>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSearchNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<SearchTvShowsBloc>(),
         ),
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistNotifier>(),

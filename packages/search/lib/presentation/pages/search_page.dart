@@ -1,10 +1,8 @@
 import 'package:core/presentation/widgets/card_item.dart';
 import 'package:core/presentation/widgets/heading_text.dart';
-import 'package:core/utils/state_enum.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:search/presentation/provider/movie_search_notifier.dart';
-import 'package:search/presentation/provider/tv_search_notifier.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:search/presentation/bloc/search_bloc.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key, required this.isMovie});
@@ -27,12 +25,14 @@ class SearchPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              onSubmitted: (query) {
+              onChanged: (query) {
                 (isMovie)
-                    ? Provider.of<MovieSearchNotifier>(context, listen: false)
-                        .fetchMovieSearch(query)
-                    : Provider.of<TvSearchNotifier>(context, listen: false)
-                        .fetchTvSearch(query);
+                    ? context
+                        .read<SearchMoviesBloc>()
+                        .add(OnQueryChanged(query))
+                    : context
+                        .read<SearchTvShowsBloc>()
+                        .add(OnQueryChanged(query));
               },
               decoration: const InputDecoration(
                 hintText: 'Search title',
@@ -50,71 +50,75 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Consumer tvShows() {
-    return Consumer<TvSearchNotifier>(
-      builder: (context, data, child) {
-        final state = data.state;
-        if (state == RequestState.loading) {
+  BlocBuilder tvShows() {
+    return BlocBuilder<SearchTvShowsBloc, SearchState>(
+      builder: (context, state) {
+        if (state is SearchLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state == RequestState.loaded) {
+        } else if (state is SearchHasData) {
+          final result = state.result;
           return Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
-                final tv = data.searchResult[index];
+                final tv = result[index];
                 return CardItem(item: tv);
               },
-              itemCount: data.searchResult.length,
+              itemCount: result.length,
             ),
           );
-        } else if (data.state == RequestState.empty) {
+        } else if (state is SearchEmpty) {
           return Expanded(
             child: Center(
-              child: Text(data.message),
+              child: Text(state.message),
             ),
           );
-        } else {
+        } else if (state is SearchError) {
           return Center(
             key: const Key('error_message'),
-            child: Text(data.message),
+            child: Text(state.message),
           );
+        } else {
+          return Expanded(child: Container());
         }
       },
     );
   }
 
-  Consumer movies() {
-    return Consumer<MovieSearchNotifier>(
-      builder: (context, data, child) {
-        final state = data.state;
-        if (state == RequestState.loading) {
+  BlocBuilder movies() {
+    return BlocBuilder<SearchMoviesBloc, SearchState>(
+      builder: (context, state) {
+        if (state is SearchLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state == RequestState.loaded) {
+        } else if (state is SearchHasData) {
+          final result = state.result;
           return Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(8),
               itemBuilder: (context, index) {
-                final movie = data.searchResult[index];
+                final movie = result[index];
                 return CardItem(item: movie);
               },
-              itemCount: data.searchResult.length,
+              itemCount: result.length,
             ),
           );
-        } else if (data.state == RequestState.empty) {
+        } else if (state is SearchEmpty) {
           return Expanded(
             child: Center(
-              child: Text(data.message),
+              child: Text(state.message),
             ),
           );
-        } else {
+        } else if (state is SearchError) {
           return Center(
             key: const Key('error_message'),
-            child: Text(data.message),
+            child: Text(state.message),
           );
+        } else {
+          return Expanded(child: Container());
         }
       },
     );

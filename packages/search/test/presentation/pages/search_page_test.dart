@@ -1,30 +1,41 @@
-import 'package:core/utils/state_enum.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:search/presentation/bloc/search_bloc.dart';
 import 'package:search/presentation/pages/search_page.dart';
-import 'package:search/presentation/provider/movie_search_notifier.dart';
-import 'package:search/presentation/provider/tv_search_notifier.dart';
 
 import '../../../../movie/test/dummy_data/dummy_objects.dart';
 import '../../../../tv/test/dummy_data/dummy_objects.dart';
-import 'search_page_test.mocks.dart';
 
-@GenerateMocks([MovieSearchNotifier, TvSearchNotifier])
+class SearchEventFake extends Fake implements SearchEvent {}
+
+class SearchStateFake extends Fake implements SearchState {}
+
+class MockSearchMoviesBloc extends MockBloc<SearchEvent, SearchState>
+    implements SearchMoviesBloc {}
+
+class MockSearchTvShowsBloc extends MockBloc<SearchEvent, SearchState>
+    implements SearchTvShowsBloc {}
+
 void main() {
-  late MockMovieSearchNotifier mockMovieSearchNotifier;
-  late MockTvSearchNotifier mockTvSearchNotifier;
+  late MockSearchMoviesBloc mockSearchMoviesBloc;
+  late MockSearchTvShowsBloc mockSearchTvShowsBloc;
+
+  setUpAll(() {
+    registerFallbackValue(SearchEventFake());
+    registerFallbackValue(SearchStateFake());
+  });
 
   setUp(() {
-    mockMovieSearchNotifier = MockMovieSearchNotifier();
-    mockTvSearchNotifier = MockTvSearchNotifier();
+    mockSearchMoviesBloc = MockSearchMoviesBloc();
+    mockSearchTvShowsBloc = MockSearchTvShowsBloc();
   });
 
   Widget makeTestableWidgetMovie(Widget body) {
-    return ChangeNotifierProvider<MovieSearchNotifier>.value(
-      value: mockMovieSearchNotifier,
+    return BlocProvider<SearchMoviesBloc>.value(
+      value: mockSearchMoviesBloc,
       child: MaterialApp(
         home: body,
       ),
@@ -32,8 +43,8 @@ void main() {
   }
 
   Widget makeTestableWidgetTv(Widget body) {
-    return ChangeNotifierProvider<TvSearchNotifier>.value(
-      value: mockTvSearchNotifier,
+    return BlocProvider<SearchTvShowsBloc>.value(
+      value: mockSearchTvShowsBloc,
       child: MaterialApp(
         home: body,
       ),
@@ -43,7 +54,7 @@ void main() {
   group('Search Movies Page', () {
     testWidgets('Page should display center progress bar when loading',
         (WidgetTester tester) async {
-      when(mockMovieSearchNotifier.state).thenReturn(RequestState.loading);
+      when(() => mockSearchMoviesBloc.state).thenReturn(SearchLoading());
 
       final progressBarFinder = find.byType(CircularProgressIndicator);
 
@@ -55,8 +66,8 @@ void main() {
 
     testWidgets('Page should display ListView when data is loaded',
         (WidgetTester tester) async {
-      when(mockMovieSearchNotifier.state).thenReturn(RequestState.loaded);
-      when(mockMovieSearchNotifier.searchResult).thenReturn(testMovieList);
+      when(() => mockSearchMoviesBloc.state)
+          .thenReturn(SearchHasData(testMovieList));
 
       final textFieldFinder = find.byType(TextField);
       final listViewFinder = find.byType(ListView);
@@ -74,8 +85,8 @@ void main() {
 
     testWidgets('Page should display text with message when Empty',
         (WidgetTester tester) async {
-      when(mockMovieSearchNotifier.state).thenReturn(RequestState.empty);
-      when(mockMovieSearchNotifier.message).thenReturn('No Data is found');
+      when(() => mockSearchMoviesBloc.state)
+          .thenReturn(const SearchEmpty('No Data is found'));
 
       final textFinder = find.text('No Data is found');
 
@@ -87,8 +98,8 @@ void main() {
 
     testWidgets('Page should display text with message when Error',
         (WidgetTester tester) async {
-      when(mockMovieSearchNotifier.state).thenReturn(RequestState.error);
-      when(mockMovieSearchNotifier.message).thenReturn('Error message');
+      when(() => mockSearchMoviesBloc.state)
+          .thenReturn(const SearchError('Error message'));
 
       final textFinder = find.byKey(const Key('error_message'));
 
@@ -102,7 +113,7 @@ void main() {
   group('Search Tv Shows Page', () {
     testWidgets('Page should display center progress bar when loading',
         (WidgetTester tester) async {
-      when(mockTvSearchNotifier.state).thenReturn(RequestState.loading);
+      when(() => mockSearchTvShowsBloc.state).thenReturn(SearchLoading());
 
       final progressBarFinder = find.byType(CircularProgressIndicator);
 
@@ -114,8 +125,8 @@ void main() {
 
     testWidgets('Page should display ListView when data is loaded',
         (WidgetTester tester) async {
-      when(mockTvSearchNotifier.state).thenReturn(RequestState.loaded);
-      when(mockTvSearchNotifier.searchResult).thenReturn(testTvList);
+      when(() => mockSearchTvShowsBloc.state)
+          .thenReturn(SearchHasData(testTvList));
 
       final textFieldFinder = find.byType(TextField);
       final listViewFinder = find.byType(ListView);
@@ -133,8 +144,8 @@ void main() {
 
     testWidgets('Page should display text with message when Empty',
         (WidgetTester tester) async {
-      when(mockTvSearchNotifier.state).thenReturn(RequestState.empty);
-      when(mockTvSearchNotifier.message).thenReturn('No Data is found');
+      when(() => mockSearchTvShowsBloc.state)
+          .thenReturn(const SearchEmpty('No Data is found'));
 
       final textFinder = find.text('No Data is found');
 
@@ -146,8 +157,8 @@ void main() {
 
     testWidgets('Page should display text with message when Error',
         (WidgetTester tester) async {
-      when(mockTvSearchNotifier.state).thenReturn(RequestState.error);
-      when(mockTvSearchNotifier.message).thenReturn('Error message');
+      when(() => mockSearchTvShowsBloc.state)
+          .thenReturn(const SearchError('Error message'));
 
       final textFinder = find.byKey(const Key('error_message'));
 
